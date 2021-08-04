@@ -1,0 +1,21 @@
+sudo: required
+services:
+  - docker
+language: go
+go: master
+env:
+  global:
+    - CGO_ENABLED=0 GO111MODULE=on
+  matrix:
+    - MYSERVICE=eventservice
+    - MYSERVICE=bookservice
+install: true
+script: 
+  - cd $MYSERVICE && go build 
+  - docker image build -t myevents/$MYSERVICE:$TRAVIS_BRANCH .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+  - docker image tag myevents/$MYSERVICE:$TRAVIS_BRANCH $DOCKER_USER/$MYSERVICE:$TRAVIS_BRANCH
+  - docker image push $DOCKER_USER/$MYSERVICE:$TRAVIS_BRANCH
+
+
+

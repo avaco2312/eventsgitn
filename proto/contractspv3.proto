@@ -1,0 +1,41 @@
+syntax = "proto3";
+package contractsp;
+option go_package = "./contractsp";
+message Event {
+	string id				= 1; // add bson:"_id"
+	string name				= 2; // add dynamodbav:"EventName"
+	int64 duration			= 3;
+	int64 startdate 		= 4;
+	int64 enddate 			= 5;
+	Location Location 		= 6;
+}
+message Location {
+	string id 				= 1; //add bson:"_id"
+	string name 			= 2; // add dynamodbav:"EventName"
+	string address 			= 3;
+	string country 			= 4;
+	int64 openTime 			= 5;
+	int64 closeTime 		= 6;
+	repeated Hall halls 	= 7;
+}
+message Hall {
+	string name 			= 1; // add dynamodbav:"EventName"
+	string location			= 2;
+	int64 capacity 			= 3;
+}
+message ArrayEvent {
+	repeated Event events	= 1;
+}
+message Id {
+	string id 				= 1;
+}
+message Name {
+	string name				= 1;
+}
+message Empty {}
+service Events {
+    rpc SearchId(Id) returns (Event) {}
+	rpc SearchName(Name) returns (Event) {}
+	rpc SearchAll(Empty) returns (ArrayEvent) {}
+	rpc AddEvent(Event) returns (Id) {}
+}

@@ -1,0 +1,69 @@
+stages:
+  - build
+  - dockerbuild
+  - publish
+  - deploy
+
+build:eventservice:
+  image: golang:latest
+  stage: build
+  before_script:
+    - cd eventservice
+  script:
+    - CGO_ENABLED=0 GO111MODULE=on go build .
+  artifacts:
+    paths:
+      - eventservice/eventservice
+      - eventservice/Dockerfile
+dockerbuild:eventservice:
+  image: docker:17.04.0-ce
+  stage: dockerbuild
+  dependencies:
+    - build:eventservice
+  script:
+    - docker image build -t avaco/myevents:gitlab eventservice
+
+build:bookservice:
+  image: golang:latest
+  stage: build
+  before_script:
+    - cd bookservice
+  script:
+    - CGO_ENABLED=0 GO111MODULE=on go build .
+  artifacts:
+    paths:
+      - bookservice/bookservice
+      - bookservice/Dockerfile
+dockerbuild:bookservice:
+  image: docker:17.04.0-ce
+  stage: dockerbuild
+  dependencies:
+    - build:bookservice
+  script:
+    - docker image build -t avaco/mybooks:gitlab bookservice
+
+publish:
+  image: docker:17.04.0-ce
+  stage: publish
+  dependencies:
+    - dockerbuild:eventservice
+    - dockerbuild:bookservice
+  before_script:
+    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  script:
+    - docker image push avaco/myevents:gitlab
+    - docker image push avaco/mybooks:gitlab
+
+deploy:
+  image: docker:17.04.0-ce
+  stage: deploy
+  dependencies:
+    - dockerbuild:eventservice
+    - dockerbuild:bookservice  
+  script:
+    - docker network create myevents
+    - docker run -d --network myevents -e ALLOW_ANONYMOUS_LOGIN=yes --name zookeeper bitnami/zookeeper:latest
+    - docker run -d --network myevents -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=example --name mongo mongo
+    - docker run -d --network myevents -e KAFKA_BROKER_ID=1 -e KAFKA_CFG_LISTENERS=PLAINTEXT://:9092 -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092 -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181 -e ALLOW_PLAINTEXT_LISTENER=yes --name kafka bitnami/kafka:latest
+    - docker run -d --network myevents --name myevents -p 8070:8070 -e DB_TYPE=mongo -e QUEUE_TYPE=kafka -e RUN_ENV=docker avaco/myevents:gitlab
+    - docker run -d --network myevents --name mybooks -p 8071:8071 -e DB_TYPE=mongo -e QUEUE_TYPE=kafka -e RUN_ENV=docker avaco/mybooks:gitlab

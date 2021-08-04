@@ -1,0 +1,121 @@
+curl -X GET http://localhost:8070/events/name/opera%20juana
+
+curl -X GET http://localhost/events
+
+curl -X GET http://localhost/events/id/60e6515a4227c400011f0319
+
+curl -X GET http://localhost/books/events
+
+curl -X GET http://localhost:8071/books/events/name/opera%20juana
+
+curl -X GET http://localhost:8071/books/events/id/60d28ba36efb600001647b75
+
+curl -X POST http://localhost/events
+-d '{
+    "name": "opera rigoletto",
+    "startdate": 40987943,
+    "enddate": 43988943,
+    "duration": 120,
+    "location": {
+        "name": "West Street Opera House",
+        "address": "11 west street, AZ 73646",
+        "country": "USA",
+        "opentime": 7,
+        "closetime": 20,
+        "halls": [
+            {
+                "name": "Cesar Hall",
+                "location": "second floor, room 2210",
+                "capacity": 10
+            },
+            {
+                "name": "Caligula Hall",
+                "location": "second floor, room 2110",
+                "capacity": 20
+            }
+        ]
+    }
+}'
+
+curl -X GET http://localhost:30328/events
+
+curl -X GET http://localhost:30328/events/name/opera%20rigolleto
+
+curl -X GET http://localhost:30328/events/id/60ae967b218e9c0001864b13
+
+
+curl -X POST http://localhost:30328/events
+-d '{
+    "name": "opera rigolleto",
+    "startdate": 40987943,
+    "enddate": 43988943,
+    "duration": 120,
+    "location": {
+        "name": "West Street Opera House",
+        "address": "11 west street, AZ 73646",
+        "country": "USA",
+        "opentime": 7,
+        "closetime": 20,
+        "halls": [
+            {
+                "name": "Cesar Hall",
+                "location": "second floor, room 2210",
+                "capacity": 10
+            },
+            {
+                "name": "Caligula Hall",
+                "location": "second floor, room 2110",
+                "capacity": 20
+            }
+        ]
+    }
+}'
+
+curl -X GET http://localhost:30043/books/events
+
+curl -X GET http://localhost:30043/books/events/name/opera%20rigolleto
+
+curl -X GET http://localhost:30043/books/events/id/60ae967b218e9c0001864b13
+
+
+curl -X GET http://52.11.143.232:8070/events
+
+curl -X GET http://52.11.143.232:8070/events/name/opera%20rigolleto
+
+curl -X GET http://52.11.143.232:8070/events/id/60b508d7ce01440cb0cff16d
+
+curl -X GET http://52.11.143.232:8071/books/events
+
+curl -X GET http://52.11.143.232:8071/books/events/name/opera%20rigolleto
+
+curl -X GET http://52.11.143.232:8071/books/events/id/61076208c992cb0ba686c184
+
+curl -X POST http://52.11.143.232:8070/events
+-d '{
+    "name": "opera rigolleto",
+    "startdate": 40987943,
+    "enddate": 43988943,
+    "duration": 120,
+    "location": {
+        "name": "West Street Opera House",
+        "address": "11 west street, AZ 73646",
+        "country": "USA",
+        "opentime": 7,
+        "closetime": 20,
+        "halls": [
+            {
+                "name": "Cesar Hall",
+                "location": "second floor, room 2210",
+                "capacity": 10
+            },
+            {
+                "name": "Caligula Hall",
+                "location": "second floor, room 2110",
+                "capacity": 20
+            }
+        ]
+    }
+}'
+
+
+

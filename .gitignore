@@ -1,0 +1,5 @@
+/.dccache
+/go.mod
+/go.sum
+/grafana.json
+/pod-metrics-server-6dfddc5fb8-szv7d.yaml
