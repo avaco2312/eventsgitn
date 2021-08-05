@@ -1,3 +1,3 @@
 # eventsgit
 
-Implementación de Cloud Native Programming con deploy local, Docker, Kubernet, AWS. MongoDB y Dynamo. RabbitMQ, Kafka, SQS. Llamadas RESTFULL y gRPC.
+Implementación de Cloud Native Programming con deploy local, Docker, Kubernet, AWS. MongoDB y Dynamo. RabbitMQ, Kafka, SQS. Llamadas RESTFUL y gRPC.
